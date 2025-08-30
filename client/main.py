@@ -1,11 +1,12 @@
 from sys import argv
 
 from app.core import cli_action, interface_create
-from app.utils import seal_api
+from app.core import cli_action, interface_create
 
 
 def main():
     if len(argv) <= 1:
+        interface_create()
         interface_create()
         return
     elif len(argv) > 3:
@@ -15,6 +16,7 @@ def main():
         argv[1],
         argv[2] if len(argv) == 3 else None,
     )
+
 
     print("All seals registered")
 
