@@ -1,5 +1,7 @@
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 API_ENDPOINT = os.getenv("API_ENDPOINT")
-curr_dir = os.getcwd
+METHOD = os.getenv("METHOD")

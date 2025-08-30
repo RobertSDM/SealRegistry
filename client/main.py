@@ -1,19 +1,28 @@
 from sys import argv
 
+from app.core import cli_action, interface_action
+from app.utils import seal_api
+
 def main():
-    if len(argv) == 3:
-        start = argv[1]
-        end = argv[2]
-        
-        
-    elif len(argv) == 2:
-        start = argv[1]
+    if len(argv) <= 1:
+        interface_action()
+        return
 
+    try:
+        if len(argv) == 3:
+            cli_action(
+                seal_api(),
+                int(argv[1]),
+                int(argv[2]),
+            )
+        elif len(argv) == 2:
+            cli_action(seal_api(), int(argv[1]))
 
-    else:
-        pass
-    
-    
+    except ValueError:
+        print("The start is not a valid number")
+
+    print("All seals registered")
+
 
 if __name__ == "__main__":
     main()
