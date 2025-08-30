@@ -1,4 +1,12 @@
+class InterfaceProgressBar:
+
+    @staticmethod
+    def plot():
+        pass
+
+
 class CLIProgressBar:
+    @staticmethod
     def plot(target: int, current: int, done: bool):
         bar_size = 50
         percent_progress = current * 100 // target
