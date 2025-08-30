@@ -6,6 +6,7 @@ from app.core import cli_action, interface_create
 def main():
     if len(argv) <= 1:
         interface_create()
+        interface_create()
         return
     elif len(argv) > 3:
         raise Exception("2 arguments are required but more were given")
