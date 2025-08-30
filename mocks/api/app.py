@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, abort
 
 from data import api_seals
 
@@ -11,15 +11,29 @@ def home():
     return "Server Online"
 
 
-@app.post("/transport/seal/checks")
+@app.get("/transport/seal/check")
 def seal_check():
-    seals = request.get_json()
-    seals = set(seals)
+    try:
+        seal = int(request.args.get("seal", 0))
 
-    not_registered = list()
+        if seal not in api_seals["seals"]:
+            return "", 404
 
-    for s in seals:
-        if s not in api_seals["seals"]:
-            not_registered.append(s)
+        return "", 200
+    except ValueError as e:
+        return "", 422
 
-    return not_registered
+
+@app.post("/transport/seal/register")
+def seal_register():
+    try:
+        seal = int(request.args.get("seal", 0))
+
+        if seal == 0:
+            return "", 422
+
+        api_seals["seals"].add(seal)
+
+        return "", 200
+    except ValueError as e:
+        return "", 422
