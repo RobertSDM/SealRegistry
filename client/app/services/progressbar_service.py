@@ -1,11 +1,12 @@
-class InterfaceProgressBar:
+from app.services.progressbar_interface import Progressbar
 
-    @staticmethod
-    def plot():
+
+class InterfaceProgressBar(Progressbar):
+    def plot(target: int, current: int, done: bool):
         pass
 
 
-class CLIProgressBar:
+class CLIProgressBar(Progressbar):
     @staticmethod
     def plot(target: int, current: int, done: bool):
         bar_size = 50
@@ -26,4 +27,4 @@ class CLIProgressBar:
             print(" " * (len(bar) + 10), end="\r")
             return
 
-        print(bar + f" ({percent_progress}%)", end="\r")
+        print(bar + f" ({percent_progress}%) {current}/{target}", end="\r")
