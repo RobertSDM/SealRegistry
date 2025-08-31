@@ -1,10 +1,10 @@
-from .interface import SealAPI
+from ...interfaces.seal_api_interface import SealAPI
 
 
 class AutomationSealAPI(SealAPI):
 
     @staticmethod
-    def check(seal: int) -> bool:
+    def validate(seal: int) -> bool:
         pass
 
     @staticmethod

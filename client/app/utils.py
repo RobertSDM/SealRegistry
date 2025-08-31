@@ -1,8 +1,8 @@
 from enum import Enum
 
 from app.constants import METHOD
-from app.seal_api.automation_api import AutomationSealAPI
-from app.seal_api.http_api import HTTPSealAPI
+from app.services.seal_api.automation_api import AutomationSealAPI
+from app.services.seal_api.http_api import HTTPSealAPI
 
 
 class MethodTypes(Enum):

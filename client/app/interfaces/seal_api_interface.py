@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class SealAPI(ABC):
     @abstractmethod
-    def check(seal: int) -> bool:
+    def validate(seal: int) -> bool:
         pass
 
     @abstractmethod

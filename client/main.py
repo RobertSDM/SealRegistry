@@ -1,22 +1,14 @@
 from sys import argv
 
-from app.core import cli_action, interface_create
+from app.cli import init_cli
+from app.gui import init_gui
 
 
 def main():
     if len(argv) <= 1:
-        interface_action()
-        return
-    elif len(argv) > 3:
-        raise Exception("2 arguments are required but more were given")
-
-    cli_action(
-        argv[1],
-        argv[2] if len(argv) == 3 else None,
-    )
-
-
-    print("All seals registered")
+        init_gui()
+    else:
+        init_cli(argv)
 
 
 if __name__ == "__main__":
