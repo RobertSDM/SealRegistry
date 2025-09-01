@@ -1,4 +1,4 @@
-# Seal Registry
+# Seal registration
 
 Project made to automate the process of checking and registering seals
 

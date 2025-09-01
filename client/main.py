@@ -10,7 +10,7 @@ def main():
         cord = Automation.get_cordinates()
         auto = Automation(cord)
 
-        auto.automate([int(seal) for seal in argv[1:]])
+        auto.automate([int(seal) for seal in argv[1:] if not seal.startswith("-")])
 
     # if len(argv) <= 1:
     #     init_gui()

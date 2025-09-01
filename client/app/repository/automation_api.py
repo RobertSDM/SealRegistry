@@ -86,20 +86,25 @@ class Automation:
         not_registered = list()
 
         if len(seals) == 1:
-            start, end = pkg_range_from_random_position(seals[0])
+            start, end = pkg_range_from_random_position(int(seals[0]))
         else:
             start, end = seals[0], seals[1]
 
-        for seals in range(start, end + 1):
+        # The standard package size is 100 seals
+        # Tf the function sleeps for 1 second, and iterates 100 times
+        # The average time is 100 seconds or 1 minute and 40 seconds
+        for seal in range(start, end + 1):
             self.__clean_input()
 
-            pyautogui.write(str(seals))
+            pyautogui.write(str(seal))
+
+            # Comfirming the seal
             pyautogui.press("f9")
 
             out = self.read_out()
 
-            if self.__success_msg not in out.lower() and str(seals) not in out:
-                not_registered.append(seals)
+            if self.__success_msg not in out.lower() and str(seal) not in out:
+                not_registered.append(seal)
 
             sleep(1)
 
