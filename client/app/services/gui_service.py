@@ -52,7 +52,9 @@ class GUI(Interface):
         self.add_widget("form_frame", form_frame)
         form_frame.pack(expand=True)
 
-        title_label = ttk.Label(form_frame, text="Seal Registry", font=("Arial", 12))
+        title_label = ttk.Label(
+            form_frame, text="Seal registration", font=("Arial", 12)
+        )
         self.add_widget("title_label", title_label)
         title_label.pack(pady=20)
 

@@ -7,6 +7,8 @@ requires-python = ">=3.12"
 dependencies = [
     "aiohttp>=3.12.15",
     "async-tkinter-loop>=0.9.3",
+    "pyautogui>=0.9.54",
+    "pyperclip>=1.9.0",
     "python-dotenv>=1.1.1",
     "requests>=2.32.5",
 ]

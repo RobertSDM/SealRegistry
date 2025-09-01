@@ -9,6 +9,6 @@ def init_gui():
     Starts the GUI
     """
 
-    gui = GUI("Seals Registry")
+    gui = GUI("Seals registration")
 
     async_mainloop(gui.app)

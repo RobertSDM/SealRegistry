@@ -3,7 +3,6 @@ from enum import Enum
 from app.constants import METHOD, PACKAGE_SIZE
 from app.exceptions import AppError
 from app.interfaces.seal_api_interface import SealAPI
-from app.repository.automation_api import AutomationSealAPI
 from app.repository.http_api import HTTPSealAPI
 
 
@@ -21,7 +20,7 @@ def seal_api() -> SealAPI:
     if not METHOD:
         raise AppError("The environment variable 'METHOD' is not defined")
 
-    return HTTPSealAPI if METHOD == MethodTypes.API.name else AutomationSealAPI
+    return HTTPSealAPI
 
 
 def pkg_range_from_random_position(seal: int) -> tuple[int, int]:
