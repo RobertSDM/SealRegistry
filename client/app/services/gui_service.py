@@ -3,9 +3,9 @@ from tkinter import TclError, ttk
 from tkinter import messagebox
 from async_tkinter_loop import async_handler
 
-from app.constants import INTERFACE_HEIGHT, INTERFACE_WIDTH, PACKAGE_SIZE
+from app.constants import INTERFACE_HEIGHT, INTERFACE_WIDTH
 from app.core import register_seals, validate_seals
-from app.utils import validate_range_start_end
+from app.utils import pkg_range_from_random_position, validate_range_start_end
 from app.exceptions import AppError
 from app.services.progressbar_service import GUIProgressbar
 from app.interfaces.interface_interface import Interface
@@ -31,7 +31,10 @@ class GUI(Interface):
         try:
             validate_range_start_end(start, end)
 
-            end_metric = end + 1 if end else start + PACKAGE_SIZE
+            if not end:
+                start, end_metric = pkg_range_from_random_position(start)
+            else:
+                end_metric = end + 1
 
             not_registered = await validate_seals(
                 self.find_widget("progress_bar"), start, end_metric

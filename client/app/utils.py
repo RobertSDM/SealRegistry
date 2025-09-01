@@ -1,6 +1,6 @@
 from enum import Enum
 
-from app.constants import METHOD
+from app.constants import METHOD, PACKAGE_SIZE
 from app.exceptions import AppError
 from app.interfaces.seal_api_interface import SealAPI
 from app.repository.automation_api import AutomationSealAPI
@@ -22,6 +22,26 @@ def seal_api() -> SealAPI:
         raise AppError("The environment variable 'METHOD' is not defined")
 
     return HTTPSealAPI if METHOD == MethodTypes.API.name else AutomationSealAPI
+
+
+def pkg_range_from_random_position(seal: int) -> tuple[int, int]:
+    """
+    Calculates the start and end values, based on a random seal
+
+    Args
+    ---
+    seal
+        The seal in a random position
+
+    Returns
+    ---
+    Returns a tuple with the calculated start and end values
+    """
+
+    return (
+        seal - (seal % PACKAGE_SIZE) + 1,
+        seal + (PACKAGE_SIZE - (seal % PACKAGE_SIZE)),
+    )
 
 
 def validate_range_start_end(start: int, end: int | None = None):
