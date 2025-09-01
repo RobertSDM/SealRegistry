@@ -1,8 +1,8 @@
 import aiohttp
 
 from app.constants import API_ENDPOINT
-from app.exceptions import APIError
-from ...interfaces.seal_api_interface import SealAPI
+from app.exceptions import AppError
+from ..interfaces.seal_api_interface import SealAPI
 from aiohttp.client_exceptions import ClientConnectorError
 
 
@@ -16,7 +16,7 @@ class HTTPSealAPI(SealAPI):
                 async with session.get(url) as resp:
                     return resp.ok
         except ClientConnectorError as e:
-            raise APIError("Could not establish a connection to the server")
+            raise AppError("Could not establish a connection to the server")
 
     @staticmethod
     async def register(seal: int) -> bool:
@@ -27,4 +27,4 @@ class HTTPSealAPI(SealAPI):
                 async with session.post(url) as resp:
                     return resp.ok
         except ClientConnectorError as e:
-            raise APIError("Could not establish a connection to the server")
+            raise AppError("Could not establish a connection to the server")

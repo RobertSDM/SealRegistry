@@ -1,4 +1,4 @@
-from ...interfaces.seal_api_interface import SealAPI
+from ..interfaces.seal_api_interface import SealAPI
 
 
 class AutomationSealAPI(SealAPI):

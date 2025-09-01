@@ -1,13 +1,28 @@
-from app.exceptions import APIError
-from app.services.progressbar_service import CLIProgressBar
 from app.constants import PACKAGE_SIZE
-from app.utils import seal_api, validate_range_start_end
+from app.utils import seal_api
 from app.interfaces.progressbar_interface import ProgressbarInterface
 
 
-async def validate_action(
+async def validate_seals(
     progress_bar: ProgressbarInterface, start: int, end: int
 ) -> list[int]:
+    """
+    Validade the seals calling the [SealAPI.validate] method
+
+    Args
+    ---
+    progress_bar
+        A class that extends [ProgressbarInterface]. The [ProgressbarInterface.plot] method is called every interation to update the progress
+    start:
+        The range's start
+    end:
+        The range's end
+
+    Returns
+    ---
+    The not registered seals
+    """
+
     not_registered = list()
 
     for seal in range(start, end):
@@ -24,9 +39,24 @@ async def validate_action(
     return not_registered
 
 
-async def register_action(
+async def register_seals(
     progress_bar: ProgressbarInterface, seals: list[int]
 ) -> list[int]:
+    """
+    Validade the seals calling the [SealAPI.validate] method
+
+    Args
+    ---
+    progress_bar
+        A class that extends [ProgressbarInterface]. The [ProgressbarInterface.plot] method is called every interation to update the progress
+    seals
+        The seals to be registered
+
+    Returns
+    ---
+    The seals that could not be registered
+    """
+
     seal_error = list()
 
     for i, seal in enumerate(seals):
@@ -41,24 +71,3 @@ async def register_action(
         )
 
     return seal_error
-
-
-async def cli_action(start: str, end: str | None = None) -> list[int]:
-    try:
-        start = int(start)
-        end = int(end)
-
-        progress_bar = CLIProgressBar()
-
-        validate_range_start_end(start, end)
-
-        end_metric = end + 1 if end else start + PACKAGE_SIZE
-
-        not_registered = await validate_action(progress_bar, start, end_metric)
-        seal_error = await register_action(progress_bar, not_registered)
-
-        return seal_error
-    except APIError as e:
-        print(e.args[0])
-    except ValueError:
-        print("The start or the end is not a valid number")

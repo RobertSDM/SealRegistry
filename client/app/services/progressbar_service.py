@@ -4,7 +4,7 @@ from typing import Any
 from app.interfaces.progressbar_interface import ProgressbarInterface
 
 
-class ProgressbarFrame(ttk.Frame, ProgressbarInterface):
+class GUIProgressbar(ttk.Frame, ProgressbarInterface):
     def __init__(self, context: dict, master: Any):
         super().__init__(master)
 

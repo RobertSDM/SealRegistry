@@ -1,24 +1,14 @@
-from dataclasses import dataclass
 import tkinter as tk
-from tkinter import ttk
+from tkinter import TclError, ttk
 from tkinter import messagebox
 from async_tkinter_loop import async_handler
 
 from app.constants import INTERFACE_HEIGHT, INTERFACE_WIDTH, PACKAGE_SIZE
-from app.core import register_action, validate_action
+from app.core import register_seals, validate_seals
 from app.utils import validate_range_start_end
-from app.exceptions import APIError
-from app.services.progressbar_service import ProgressbarFrame
-
-
-@dataclass
-class Position:
-    padx: int = 0
-    pady: int = 0
-    ipadx: int = 0
-    ipady: int = 0
-    expand: bool = False
-    side: str = "top"
+from app.exceptions import AppError
+from app.services.progressbar_service import GUIProgressbar
+from app.interfaces.interface_interface import Interface
 
 
 class App(tk.Tk):
@@ -26,7 +16,7 @@ class App(tk.Tk):
         super().__init__()
 
 
-class GUI:
+class GUI(Interface):
     def __init__(self, wind_title: str):
         # Stores all widgets in the GUI, for easy search
         self.__context = dict()
@@ -37,29 +27,31 @@ class GUI:
 
         self.create_ui()
 
-    async def seal_registry_btn(self, start: int, end: int | None):
+    async def start(self, start: int, end: int | None):
         try:
             validate_range_start_end(start, end)
 
             end_metric = end + 1 if end else start + PACKAGE_SIZE
 
-            not_registered = await validate_action(
-                self.context["progress_bar"], start, end_metric
+            not_registered = await validate_seals(
+                self.find_widget("progress_bar"), start, end_metric
             )
-            await register_action(self.context["progress_bar"], not_registered)
-        except APIError as e:
-            print(e.args[0])
-        except ValueError as e:
+            await register_seals(self.find_widget("progress_bar"), not_registered)
+        except AppError as e:
             print(e.args[0])
 
     def create_ui(self):
+        """
+        Creates the UI
+        """
+
         form_frame = ttk.Frame(self.app)
         self.add_widget("form_frame", form_frame)
         form_frame.pack(expand=True)
 
-        title_label = ttk.Label(form_frame, text="Seal Registry")
+        title_label = ttk.Label(form_frame, text="Seal Registry", font=("Arial", 12))
         self.add_widget("title_label", title_label)
-        title_label.pack()
+        title_label.pack(pady=20)
 
         field1 = ttk.Frame(form_frame)
         field2 = ttk.Frame(form_frame)
@@ -92,8 +84,11 @@ class GUI:
         end_entry.pack(side="right")
 
         async def btn_handler():
-            await self.seal_registry_btn(start_var.get(), end_var.get())
-            messagebox.showinfo(message="All seals registered")
+            try:
+                await self.start(start_var.get(), end_var.get())
+                messagebox.showinfo(message="All seals registered")
+            except (TclError, ValueError) as e:
+                messagebox.showerror(message=e.args[0])
 
         register_btn = ttk.Button(
             form_frame,
@@ -103,7 +98,7 @@ class GUI:
         self.add_widget("register_btn", register_btn)
         register_btn.pack(pady=10)
 
-        progress_bar = ProgressbarFrame(self.context, form_frame)
+        progress_bar = GUIProgressbar(self.context, form_frame)
         self.add_widget("progress_bar", progress_bar)
 
     def add_widget(self, id: str, widget: ttk.Widget):
@@ -120,9 +115,13 @@ class GUI:
 
         self.__context[id] = widget
 
-    def find_widget(self, nameid: str):
+    def find_widget(self, nameid: str) -> ttk.Widget:
         """
         Find and return the widget with the [nameid], if no widget is found an error is raised
+
+        Returns
+        ---
+        The found widget
         """
 
         widget = self.context.get(nameid, None)
