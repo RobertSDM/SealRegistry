@@ -13,5 +13,7 @@ PACKAGE_SIZE = 100
 
 APP_TITLE = "Cadastramento de Lacres"
 
+CONFIG_FILE_PATH = "config.json"
+
 pyautogui.PAUSE = 0.03
 

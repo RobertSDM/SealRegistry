@@ -1,16 +1,11 @@
-from email import message
-from enum import Enum
 import tkinter as tk
-from tkinter import IntVar, TclError, ttk
+from tkinter import ttk
 from tkinter.messagebox import askyesno, showerror, showinfo, askokcancel
 from tkinter.simpledialog import askinteger
 from typing import Literal
 
 from app.constants import INTERFACE_HEIGHT, INTERFACE_WIDTH
-
-
-class MsgDialogType(Enum):
-    INFO, ERROR = range(1, 3)
+from app.schemas import ErrorSeal
 
 
 class InterGUI:
@@ -30,7 +25,7 @@ class InterGUI:
         else:
             showerror(self._title, msg)
 
-    def list_dialog(self, msg: str, list_: list):
+    def list_dialog(self, msg: str, list_: list[ErrorSeal]):
         root = tk.Tk()
 
         root.title(self._title)
@@ -39,14 +34,22 @@ class InterGUI:
         main = ttk.Frame(root)
 
         label = ttk.Label(main, text=msg)
-        listbox = tk.Listbox(main)
 
-        for i, text in enumerate(list_):
-            listbox.insert(i + 1, text)
+        listbox_frame = ttk.Frame(main)
+        listbox = tk.Listbox(listbox_frame, background="white", width=50)
+
+        scrollbar = ttk.Scrollbar(listbox_frame, command=listbox.yview)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        listbox.config(yscrollcommand=scrollbar.set)
+
+        for i, err in enumerate(list_):
+            listbox.insert(i + 1, f"{err.seal} -> {err.reason}")
 
         label.pack()
+        scrollbar.pack()
         listbox.pack()
 
+        listbox_frame.pack()
         main.pack(expand=True)
 
         root.mainloop()

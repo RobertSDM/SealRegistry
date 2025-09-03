@@ -3,4 +3,4 @@
 **/.venv
 **/cache.json
 build
-*.spec
+config.json
