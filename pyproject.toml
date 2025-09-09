@@ -1,0 +1,16 @@
+[project]
+name = "api-registry"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aiohttp>=3.12.15",
+    "async-tkinter-loop>=0.9.3",
+    "keyboard>=0.13.5",
+    "pyautogui>=0.9.54",
+    "pyinstaller>=6.15.0",
+    "pyperclip>=1.9.0",
+    "python-dotenv>=1.1.1",
+    "requests>=2.32.5",
+]
